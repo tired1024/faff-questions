@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>How Well Do You Know Aden? ❤️</title>
+<title>How Well Do You Know Aden? 💖</title>
 <style>
   body {
     font-family: 'Arial', sans-serif;
@@ -13,10 +13,10 @@
   }
   h1 {
     font-size: 2.2em;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
   }
   .question {
-    font-size: 1.4em;
+    font-size: 1.3em;
     margin: 20px 0;
   }
   .buttons {
@@ -36,7 +36,7 @@
     color: white;
   }
   button:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
     background: linear-gradient(90deg, #2193b0, #6dd5ed);
   }
   #score {
@@ -44,13 +44,19 @@
     font-size: 1.5em;
     font-weight: bold;
   }
+  .message {
+    font-size: 1.2em;
+    margin: 15px 0;
+    color: #FF3CAC;
+  }
 </style>
 </head>
 <body>
 
-<h1>How Well Do You Know Aden? 💖</h1>
+<h1>How Well Do You Know Aden? 😏💖</h1>
 <div id="game"></div>
 <div id="score"></div>
+<div class="message" id="message"></div>
 
 <audio id="correctSound" src="https://www.soundjay.com/button/sounds/button-3.mp3"></audio>
 <audio id="wrongSound" src="https://www.soundjay.com/button/sounds/button-10.mp3"></audio>
@@ -58,21 +64,22 @@
 <script>
 const correctSound = document.getElementById('correctSound');
 const wrongSound = document.getElementById('wrongSound');
+const messageDiv = document.getElementById('message');
 
 const questions = [
-  { q: "Favourite colour?", a: "Black or Red", options: ["Black or Red", "Blue", "Green", "Yellow"] },
-  { q: "Full name?", a: "Aden Mahamud", options: ["Aden Mahamud", "John Doe", "Alex Brown", "Chris Lee"] },
-  { q: "Fav song (this week)?", a: "Bad Girls Like You or Don't Hide", options: ["Bad Girls Like You or Don't Hide", "Shape of You", "Blinding Lights", "Levitating"] },
-  { q: "Something about you you wish I knew?", a: "I care a lot, just tell me", options: ["I care a lot, just tell me", "I never care", "I only like music", "I like pizza"] },
+  { q: "Favourite colour?", a: "Black or Red", options: ["Black or Red", "Green", "Blue", "Purple"] },
+  { q: "Full name?", a: "Aden Mahamud", options: ["Aden Mahamud", "Adam Maher", "Aden Malik", "Alan Mahamud"] },
+  { q: "Fav song (this week)?", a: "Bad Girls Like You or Don't Hide", options: ["Bad Girls Like You or Don't Hide", "Good Girls Go", "Don't Stop Me Now", "Blinding Lights"] },
+  { q: "Something about you I wish I knew?", a: "I care a lot, just tell me", options: ["I care a lot, just tell me", "I never care", "I only like music", "I don’t really notice"] },
   { q: "When did I first know I had feelings for you?", a: "Seeing you everywhere and hearing my fav song", options: ["Seeing you everywhere and hearing my fav song", "Last week", "A year ago", "From the start"] },
-  { q: "Fav movie/series?", a: "Art the Clown", options: ["Art the Clown", "Adventure Time", "Inception", "Titanic"] },
-  { q: "How do I comfort myself?", a: "Chicken or listening", options: ["Chicken or listening", "Watching TV", "Gaming only", "Sleep"] },
+  { q: "Fav movie/series?", a: "Art the Clown", options: ["Art the Clown", "Adventure Time", "Inception", "The Matrix"] },
+  { q: "How do I comfort myself?", a: "Chicken or listening", options: ["Chicken or listening", "Watching TV", "Gaming only", "Sleeping"] },
   { q: "Favourite memory of us?", a: "Hanging out and talking", options: ["Hanging out and talking", "First text", "Birthday party", "School trip"] },
-  { q: "Favourite foods?", a: "Chicken", options: ["Chicken", "Pizza", "Sushi", "Pasta"] },
-  { q: "Drink I like the most?", a: "Mango drinks (cold)", options: ["Mango drinks (cold)", "Water", "Juice", "Soda"] },
+  { q: "Favourite foods?", a: "Chicken", options: ["Chicken", "Pizza", "Sushi", "Burger"] },
+  { q: "Drink I like the most?", a: "Mango drinks (cold)", options: ["Mango drinks (cold)", "Water", "Cola", "Orange juice"] },
   { q: "Something I'm passionate about?", a: "Hobbies and loving someone", options: ["Hobbies and loving someone", "Sports", "Movies", "Food"] },
   { q: "Fav free time activities?", a: "Reading manhwas or gaming", options: ["Reading manhwas or gaming", "Sleeping", "Watching TV", "Swimming"] },
-  { q: "Do I get jealous easily?", a: "Yes, but managing it", options: ["Yes, but managing it", "No", "Rarely", "Always"] },
+  { q: "Do I get jealous easily?", a: "Yes, but managing it", options: ["Yes, but managing it", "No", "Sometimes", "Rarely"] },
   { q: "Relationship with family?", a: "Well liked, dependable and silly", options: ["Well liked, dependable and silly", "Distant", "Complicated", "Perfect"] },
   { q: "Something to work on in our relationship?", a: "Communication and time", options: ["Communication and time", "Trust", "Patience", "Cooking"] },
   { q: "What does love mean to me?", a: "Being there and valuing feelings", options: ["Being there and valuing feelings", "Fun and excitement", "Gifts", "Forever"] },
@@ -88,13 +95,13 @@ const questions = [
 
 let current = 0;
 let score = 0;
-
 const gameDiv = document.getElementById("game");
 const scoreDiv = document.getElementById("score");
 
 function showQuestion() {
   if(current >= questions.length){
-    gameDiv.innerHTML = `<h2>Game Over!</h2><p>You scored ${score} / ${questions.length} ❤️</p>`;
+    gameDiv.innerHTML = `<h2>Game Over! 😘</h2><p>You scored ${score} / ${questions.length} ❤️</p>`;
+    messageDiv.innerHTML = "You really know me well! 🥰";
     return;
   }
 
@@ -105,20 +112,21 @@ function showQuestion() {
   });
 
   gameDiv.innerHTML = `<div class="question">${qObj.q}</div><div class="buttons">${buttonsHTML}</div>`;
+  messageDiv.innerHTML = "";
 }
 
 function checkAnswer(answer){
   const correctAnswer = questions[current].a;
   if(answer === correctAnswer){
     correctSound.play();
-    alert("Correct! 😎❤️");
+    messageDiv.innerHTML = "Correct! 😎💖 You're amazing!";
     score++;
   } else {
     wrongSound.play();
-    alert(`Oops! The correct answer is: ${correctAnswer} 😢`);
+    messageDiv.innerHTML = `Oops! The correct answer was: "${correctAnswer}" 😢`;
   }
   current++;
-  showQuestion();
+  setTimeout(showQuestion, 700); // short delay so she sees message
 }
 
 showQuestion();
