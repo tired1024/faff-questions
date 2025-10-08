@@ -10,30 +10,42 @@
     text-align: center;
     padding: 20px;
     color: #333;
+    min-height: 100vh;
   }
   h1 {
     font-size: 2.2em;
     margin-bottom: 25px;
   }
+  #game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
   .question {
     font-size: 1.3em;
     margin: 20px 0;
+    font-weight: bold;
   }
   .buttons {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px;
   }
   button {
-    margin: 8px;
+    width: 100%;
     padding: 12px 20px;
     font-size: 1em;
     border: none;
     border-radius: 12px;
     cursor: pointer;
-    transition: all 0.2s ease;
     background: linear-gradient(90deg, #FFAFBD, #ffc3a0);
     color: white;
+    transition: all 0.2s ease;
   }
   button:hover {
     transform: scale(1.05);
@@ -44,19 +56,21 @@
     font-size: 1.5em;
     font-weight: bold;
   }
-  .message {
+  #message {
     font-size: 1.2em;
     margin: 15px 0;
     color: #FF3CAC;
+    min-height: 1.5em;
   }
 </style>
 </head>
 <body>
 
 <h1>How Well Do You Know Aden? 😏💖</h1>
+
 <div id="game"></div>
 <div id="score"></div>
-<div class="message" id="message"></div>
+<div id="message"></div>
 
 <audio id="correctSound" src="https://www.soundjay.com/button/sounds/button-3.mp3"></audio>
 <audio id="wrongSound" src="https://www.soundjay.com/button/sounds/button-10.mp3"></audio>
@@ -68,8 +82,8 @@ const messageDiv = document.getElementById('message');
 
 const questions = [
   { q: "Favourite colour?", a: "Black or Red", options: ["Black or Red", "Green", "Blue", "Purple"] },
-  { q: "Full name?", a: "Aden Mahamud", options: ["Aden Mahamud", "Adam Maher", "Aden Malik", "Alan Mahamud"] },
-  { q: "Fav song (this week)?", a: "Bad Girls Like You or Don't Hide", options: ["Bad Girls Like You or Don't Hide", "Good Girls Go", "Don't Stop Me Now", "Blinding Lights"] },
+  { q: "Full name?", a: "Aden Mahamud", options: ["Aden Mahamud", "Aden Malik", "Aden Maher", "Aden Mahmood"] },
+  { q: "Fav song (this week)?", a: "Bad Girls Like You or Don't Hide", options: ["Bad Girls Like You or Don't Hide", "Blinding Lights", "Good Girls Go", "Don't Stop Me Now"] },
   { q: "Something about you I wish I knew?", a: "I care a lot, just tell me", options: ["I care a lot, just tell me", "I never care", "I only like music", "I don’t really notice"] },
   { q: "When did I first know I had feelings for you?", a: "Seeing you everywhere and hearing my fav song", options: ["Seeing you everywhere and hearing my fav song", "Last week", "A year ago", "From the start"] },
   { q: "Fav movie/series?", a: "Art the Clown", options: ["Art the Clown", "Adventure Time", "Inception", "The Matrix"] },
@@ -90,46 +104,53 @@ const questions = [
   { q: "A place that brings comfort?", a: "My room / lake nearby", options: ["My room / lake nearby", "Beach", "Park", "Library"] },
   { q: "Most sentimental item?", a: "My heart & plushies", options: ["My heart & plushies", "Watch", "Bracelet", "Photo album"] },
   { q: "Fav shows?", a: "Anime & Adventure Time", options: ["Anime & Adventure Time", "Friends", "The Office", "Breaking Bad"] },
-  { q: "Closest person to me?", a: "My mum", options: ["My mum", "Best friend", "Sibling", "Parent"] }
+  { q: "Closest person to me?", a: "My mum", options: ["My mum", "Best friend", "Sibling", "Dad"] }
 ];
 
 let current = 0;
 let score = 0;
-const gameDiv = document.getElementById("game");
-const scoreDiv = document.getElementById("score");
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
 
 function showQuestion() {
-  if(current >= questions.length){
-    gameDiv.innerHTML = `<h2>Game Over! 😘</h2><p>You scored ${score} / ${questions.length} ❤️</p>`;
-    messageDiv.innerHTML = "You really know me well! 🥰";
+  if (current >= questions.length) {
+    document.getElementById("game").innerHTML = `<h2>Game Over 😘</h2><p>You scored ${score}/${questions.length} ❤️</p>`;
+    messageDiv.textContent = "You really know me 😏";
     return;
   }
 
-  const qObj = questions[current];
-  let buttonsHTML = "";
-  qObj.options.forEach(opt => {
-    buttonsHTML += `<button onclick="checkAnswer('${opt}')">${opt}</button>`;
-  });
+  const q = questions[current];
+  const shuffledOptions = shuffle([...q.options]);
+  const buttons = shuffledOptions.map(opt => `<button onclick="checkAnswer('${opt}')">${opt}</button>`).join("");
 
-  gameDiv.innerHTML = `<div class="question">${qObj.q}</div><div class="buttons">${buttonsHTML}</div>`;
-  messageDiv.innerHTML = "";
+  document.getElementById("game").innerHTML = `
+    <div class="question">${q.q}</div>
+    <div class="buttons">${buttons}</div>
+  `;
 }
 
-function checkAnswer(answer){
-  const correctAnswer = questions[current].a;
-  if(answer === correctAnswer){
-    correctSound.play();
-    messageDiv.innerHTML = "Correct! 😎💖 You're amazing!";
+function checkAnswer(ans) {
+  const q = questions[current];
+  if (ans === q.a) {
     score++;
+    correctSound.play();
+    messageDiv.textContent = "Correct 😍";
   } else {
     wrongSound.play();
-    messageDiv.innerHTML = `Oops! The correct answer was: "${correctAnswer}" 😢`;
+    messageDiv.textContent = `Oops 😅 the answer was: "${q.a}"`;
   }
   current++;
-  setTimeout(showQuestion, 700); // short delay so she sees message
+  setTimeout(showQuestion, 1000);
 }
 
 showQuestion();
 </script>
+
 </body>
 </html>
