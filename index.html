@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>How Well Do You Know Me?</title>
+  <style>
+    body { font-family: sans-serif; background: #fdf6f0; text-align: center; padding: 20px; }
+    .question { margin: 20px 0; font-size: 1.2em; }
+    button { margin: 5px; padding: 8px 12px; font-size: 1em; cursor: pointer; }
+    #score { margin-top: 20px; font-size: 1.2em; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>How Well Do You Know Me? ❤️</h1>
+  <div id="game"></div>
+  <div id="score"></div>
+
+  <script>
+    const questions = [
+      { q: "Favourite colour?", a: "Black or Red", options: ["Black or Red", "Blue", "Green", "Yellow"] },
+      { q: "Full name?", a: "Aden Mahamud", options: ["Aden Mahamud", "John Doe", "Chris Lee", "Alex Brown"] },
+      { q: "Fav song (this week)?", a: "Bad Girls Like You or Don't Hide", options: ["Bad Girls Like You or Don't Hide", "Shape of You", "Blinding Lights", "Levitating"] },
+      { q: "Something about you I wish you knew?", a: "I care a lot, just tell me", options: ["I care a lot, just tell me", "I never care", "I only like music", "I like pizza"] },
+      { q: "When did I first know I had feelings for you?", a: "Seeing you everywhere and hearing my fav song", options: ["Seeing you everywhere and hearing my fav song", "Last week", "A year ago", "From the start"] },
+      { q: "Fav movie/series?", a: "Art the Clown", options: ["Art the Clown", "Adventure Time", "Inception", "Titanic"] },
+      { q: "How do I comfort myself?", a: "Chicken or listening", options: ["Chicken or listening", "Watching TV", "Gaming only", "Sleep"] },
+      { q: "Favourite memory of us?", a: "Hanging out and talking", options: ["Hanging out and talking", "First text", "Birthday party", "School trip"] },
+      { q: "Favourite foods?", a: "Chicken", options: ["Chicken", "Pizza", "Sushi", "Pasta"] },
+      { q: "Drink I like the most?", a: "Mango drinks (cold)", options: ["Mango drinks (cold)", "Water", "Juice", "Soda"] },
+      { q: "Something I'm passionate about?", a: "Hobbies and loving someone", options: ["Hobbies and loving someone", "Sports", "Movies", "Food"] },
+      { q: "Fav free time activities?", a: "Reading manhwas or gaming", options: ["Reading manhwas or gaming", "Sleeping", "Watching TV", "Swimming"] },
+      { q: "Do I get jealous easily?", a: "Yes, but managing it", options: ["Yes, but managing it", "No", "Rarely", "Always"] },
+      { q: "Relationship with family?", a: "Well liked, dependable and silly", options: ["Well liked, dependable and silly", "Distant", "Complicated", "Perfect"] },
+      { q: "Something to work on in our relationship?", a: "Communication and time", options: ["Communication and time", "Trust", "Patience", "Cooking"] },
+      { q: "What does love mean to me?", a: "Being there and valuing feelings", options: ["Being there and valuing feelings", "Fun and excitement", "Gifts", "Forever"] },
+      { q: "A fear in a relationship?", a: "Broken promises", options: ["Broken promises", "Being alone", "Jealousy", "Conflict"] },
+      { q: "Something I dislike?", a: "Liars and broken promises", options: ["Liars and broken promises", "Traffic", "Cold weather", "Spicy food"] },
+      { q: "Core memory?", a: "Chicken weekly & borrowed PUBG account", options: ["Chicken weekly & borrowed PUBG account", "Graduation", "First trip", "Birthday party"] },
+      { q: "Something that changed perspective?", a: "People and love", options: ["People and love", "Traveling", "Reading", "Sports"] },
+      { q: "A place that brings comfort?", a: "My room / lake nearby", options: ["My room / lake nearby", "Beach", "Park", "Library"] },
+      { q: "Most sentimental item?", a: "My heart & plushies", options: ["My heart & plushies", "Watch", "Bracelet", "Photo album"] },
+      { q: "Fav shows?", a: "Anime & Adventure Time", options: ["Anime & Adventure Time", "Friends", "The Office", "Breaking Bad"] },
+      { q: "Closest person to me?", a: "My mum", options: ["My mum", "Best friend", "Sibling", "Parent"] }
+    ];
+
+    let current = 0;
+    let score = 0;
+    const gameDiv = document.getElementById("game");
+    const scoreDiv = document.getElementById("score");
+
+    function showQuestion() {
+      if (current >= questions.length) {
+        gameDiv.innerHTML = `<h2>Game Over!</h2><p>You scored ${score} out of ${questions.length} ❤️</p>`;
+        return;
+      }
+
+      const qObj = questions[current];
+      let buttonsHTML = "";
+      qObj.options.forEach(opt => {
+        buttonsHTML += `<button onclick="checkAnswer('${opt}')">${opt}</button>`;
+      });
+
+      gameDiv.innerHTML = `
+        <div class="question">${qObj.q}</div>
+        <div>${buttonsHTML}</div>
+      `;
+    }
+
+    function checkAnswer(answer) {
+      if (answer === questions[current].a) {
+        alert("Correct! 😎");
+        score++;
+      } else {
+        alert(`Oops! The correct answer is: ${questions[current].a}`);
+      }
+      current++;
+      showQuestion();
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
